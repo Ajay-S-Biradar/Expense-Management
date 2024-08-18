@@ -48,10 +48,12 @@ const authenticateUser = asyncHandler(async (req,res)=>{
         console.log(user);
         if(!user){
             res.json({"success":false, "msg":"Email is not registered", "redirect":true});
+            return;
         }
         
         if(!user.isPasswordCorrect(password)){
             res.json({"success":false, "msg":"Password and email does'nt match", "redirect":false});
+            return;
         }
         const {aToken,rToken} = await generateAccessAndRefreshToken(user)
 
@@ -107,10 +109,12 @@ const refreshAccessToken = asyncHandler( async (req,res)=>{
 
     if(!decoded){
         res.status(401).json({"error":"Anauthorised Access"})
+        return ;
     }
     const user = await User.findById(decoded?._id);
     if(!user){
         res.status(401).json({"error":"Invalid token"})
+        return ;
     }
     const options = {
         httpOnly:true,
