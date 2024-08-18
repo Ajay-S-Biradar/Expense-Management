@@ -1,5 +1,17 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/user.model')
+const cookie = require('cookie-parser')
+const jwt = require('jsonwebtoken')
+
+const generateAccessAndRefreshToken = async(user)=>{
+    const aToken =await user.generateAccessToken()
+    const rToken =await user.generateRefreshToken()
+
+    user.refreshToken = rToken ;
+    await user.save({ validateBeforeSave: false })
+
+    return {aToken, rToken}
+}
 
 
 const createUser = asyncHandler( async (req,res)=>{
@@ -30,21 +42,85 @@ const createUser = asyncHandler( async (req,res)=>{
 })
 
 const authenticateUser = asyncHandler(async (req,res)=>{
-    const {password, email} = req.body;
+    const {password, email, username} = req.body;
     try{
-        const user = await User.findOne({email});
+        const user = await User.findOne({$or:[{username},{email}]});
         console.log(user);
         if(!user){
             res.json({"success":false, "msg":"Email is not registered", "redirect":true});
         }
-        if(user.password!==password){
+        
+        if(!user.isPasswordCorrect(password)){
             res.json({"success":false, "msg":"Password and email does'nt match", "redirect":false});
         }
-        res.json({"success":true, "user":user})
+        const {aToken,rToken} = await generateAccessAndRefreshToken(user)
+
+        const loggedUser = await User.findById(user._id).select("-password -refreshToken");
+
+        // console.log("tokens: ",res)
+        // console.log("Atoken: ",aToken)
+
+        const options = {
+            httpOnly:true,
+            secure:true
+        }
+
+        res.status(200)
+        .cookie("accessToken", aToken, options)
+        .cookie("refreshToken", rToken, options)
+        .json(loggedUser)
 
     } catch (err){
         res.json({"error":err})
     }
 })
 
-module.exports = {authenticateUser, createUser}
+const signOutUser = asyncHandler( async (req,res)=>{
+    console.log(req.body);
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: {
+                refreshToken: 1 // this removes the field from document
+            }
+        },
+        {
+            new: true
+        }
+    )
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json({"success":true})
+})
+
+const refreshAccessToken = asyncHandler( async (req,res)=>{
+    const Token = req.cookies.refreshToken ;
+    const decoded = jwt.verify(Token, process.env.REFRESH_TOKEN_SECRET)
+
+    if(!decoded){
+        res.status(401).json({"error":"Anauthorised Access"})
+    }
+    const user = await User.findById(decoded?._id);
+    if(!user){
+        res.status(401).json({"error":"Invalid token"})
+    }
+    const options = {
+        httpOnly:true,
+        secure:true
+    }
+    const {rToken, aToken} = await generateAccessAndRefreshToken(user)
+    res.status(200)
+    .cookie("accessToken",aToken,options)
+    .cookie("refreshToken",rToken,options)
+    .json({"success":true})
+})
+
+module.exports = {authenticateUser, createUser, signOutUser, refreshAccessToken}
