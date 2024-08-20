@@ -9,6 +9,14 @@ const incomeSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    category:{
+        type:String,
+        required:true
+    },
+    date:{
+        type:Date,
+        required:true
+    },
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"

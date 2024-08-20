@@ -1,7 +1,10 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  
   return (
     <motion.div
       className='bg-[#1a1f2a] w-full h-full flex justify-center items-center flex-col font-bold gap-6 relative overflow-hidden' // Add overflow-x-hidden
@@ -47,6 +50,7 @@ const LandingPage = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, ease: 'easeInOut' }}
         className='font-serif bg-blue-300 text-sm p-2 m-2 rounded-2xl'
+        onClick={()=> navigate('/entry')}
       >
         Login/SignUp
       </motion.button>
