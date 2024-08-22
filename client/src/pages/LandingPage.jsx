@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import axios from "axios"
+import { API_URL } from '../utils/constants'
 
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    const res = axios.post(API_URL+'refresh');
+    if(res.success){
+      navigate('/user/dashboard');
+    }
+  })
   
   return (
     <motion.div
@@ -47,8 +56,8 @@ const LandingPage = () => {
       </motion.div>
       <motion.button 
         initial={{ opacity: .5, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: 'easeInOut' }}
+        animate={{ opacity: 1, scale: [0,0,1] }}
+        transition={{ duration: 3, ease: 'easeInOut' }}
         className='font-serif bg-blue-300 text-sm p-2 m-2 rounded-2xl'
         onClick={()=> navigate('/entry')}
       >

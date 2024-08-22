@@ -5,6 +5,7 @@ const { connectDB } = require("./db/connectdb")
 const cookieParser = require("cookie-parser")
 
 const userRoutes = require('./routes/user')
+const incomeRoutes = require('./routes/income')
 
 const app = express()
 app.use(cors())
@@ -17,7 +18,8 @@ PORT = process.env.PORT
 
 connectDB()
 
-app.use('/api',userRoutes)
+app.use('/api/user',userRoutes)
+app.use('/api/income',incomeRoutes)
 
 app.use('/',(req,res)=>{
     res.send("Working...")

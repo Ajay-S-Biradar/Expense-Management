@@ -10,14 +10,22 @@ const LoginSignUp = () => {
   const [email, setEmail] = useState('');
   const [profileImg, setProfileImg] = useState('');
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // useEffect(()=>{
-  //   const token = getToken();
-  //   if(!verifyUserLogin()){
-  //     navigate('/login');
-  //   }
-  // })
+  useEffect(()=>{
+    // const token = getToken();
+    if(!verifyUserLogin()){
+      navigate('/login');
+      return;
+    }
+    navigate('/user/');
+  })
+
+  const verifyUserLogin = async ()=>{
+    const res = axios.post(API_URL+'refresh');
+    if(res.success) return true;
+    return false;
+  }
 
   const imgErr = ()=>{
 

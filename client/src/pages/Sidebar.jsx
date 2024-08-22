@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { menuItems } from '../utils/sidebaritems';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ConfirmModal from '../components/ConfirmModal';
 import { threebars } from '../utils/icons';
+import axios from 'axios';
+import { API_URL } from '../utils/constants';
 
 const Sidebar = () => {
   const [profileImg, setProfileImg] = useState(
@@ -10,13 +12,15 @@ const Sidebar = () => {
   );
   const [username, setUsername] = useState('ajay s biradar');
   const [hideSidebar, setHideSidebar] = useState(false);
-  const [confirm, setConfirm] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
 
   const location = useLocation().pathname;
 
+  const navigate = useNavigate();
+
   const handleSignOut = async () => {
-    setConfirmModal(true);
+    const res = axios.post(API_URL+'signout');
+    navigate('/');
   };
 
   return hideSidebar?
@@ -72,7 +76,7 @@ const Sidebar = () => {
             <div>
               <h1
                 className='py-3 px-2 cursor-pointer hover:bg-rose-200 rounded-2xl'
-                onClick={handleSignOut}
+                onClick={()=> setConfirmModal(true)}
               >
                 Sign out
               </h1>
@@ -81,7 +85,7 @@ const Sidebar = () => {
       </div>
 
       {confirmModal && (
-        <ConfirmModal setConfirmModal={setConfirmModal} setConfirm={setConfirm} />
+        <ConfirmModal setConfirmModal={setConfirmModal} handleSignOut={handleSignOut} />
       )}
     </div>
   );

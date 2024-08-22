@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/user.model')
-const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 
 const generateAccessAndRefreshToken = async(user)=>{
