@@ -19,8 +19,15 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    const res = axios.post(API_URL+'signout');
-    navigate('/');
+    try {
+      const res =await axios.post(API_URL+'user/signout',{
+        withCredentials: true, // Include cookies in the request
+    });
+    console.log(res);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return hideSidebar?

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const expenseSchema = new mongoose.Schema({
     name:{
@@ -10,6 +9,17 @@ const expenseSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    category:{
+        type:String,
+        required:true
+    },
+    date:{
+        type:Date,
+        required:true
+    },
+    reference:{
+        type:String
+    },
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
@@ -17,7 +27,5 @@ const expenseSchema = new mongoose.Schema({
 },{timestamps:true})
 
 const Expense =mongoose.model("Expense", expenseSchema)
-
-mySchema.plugin(aggregatePaginate)
 
 module.exports = Expense

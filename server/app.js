@@ -6,9 +6,13 @@ const cookieParser = require("cookie-parser")
 
 const userRoutes = require('./routes/user')
 const incomeRoutes = require('./routes/income')
+const expenseRoutes = require('./routes/expense')
 
 const app = express()
-app.use(cors())
+app.use(cors({
+    origin: 'http://localhost:5173', // or your frontend URL
+    credentials: true
+}));
 app.use(express.json())
 app.use(cookieParser())
 
@@ -19,9 +23,10 @@ PORT = process.env.PORT
 connectDB()
 
 app.use('/api/user',userRoutes)
+app.use('/api/expense',expenseRoutes)
 app.use('/api/income',incomeRoutes)
 
-app.use('/',(req,res)=>{
+app.use('/',(_,res)=>{
     res.send("Working...")
 })
 

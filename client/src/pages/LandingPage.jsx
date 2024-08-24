@@ -9,7 +9,7 @@ const LandingPage = () => {
 
   useEffect(()=>{
     const res = axios.post(API_URL+'refresh');
-    if(res.success){
+    if(res.data?.error){
       navigate('/user/dashboard');
     }
   })

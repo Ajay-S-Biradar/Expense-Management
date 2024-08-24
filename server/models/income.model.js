@@ -17,6 +17,9 @@ const incomeSchema = new mongoose.Schema({
         type:Date,
         required:true
     },
+    reference:{
+        type:String
+    },
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"

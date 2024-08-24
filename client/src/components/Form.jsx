@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Form = ({handleAddItem, setAmount, setCategory, setDate, setName, setReference}) => {
+const Form = ({handleAddItem, setAmount, setCategory, setDate, setName, setReference, categories}) => {
   return (
     <div className='m-5 w-1/2'>
             <form action="" className='flex flex-col gap-4'>
@@ -20,11 +20,14 @@ const Form = ({handleAddItem, setAmount, setCategory, setDate, setName, setRefer
               onChange={(e)=> setCategory(e.target.value)}
               >
                 <option className='hidden' value="choose">Choose category</option>
-                <option value="salary">Salary</option>
+                {categories?.map((cate, ind)=>{
+                  return <option key={ind} value={cate}>{cate}</option>
+                })}
+                {/* <option value="salary">Salary</option>
                 <option value="freelancing">Freelancing</option>
                 <option value="stocks">Stocks</option>
                 <option value="youtube">YouTube</option>
-                <option value="other">Other</option>
+                <option value="other">Other</option> */}
               </select>
               <textarea onChange={(e)=> setReference(e.target.value)} className='rounded-xl p-2 m-1' placeholder='Provide the Reference' name="" id=""></textarea>
               <div className='flex justify-center'>

@@ -7,11 +7,13 @@ import Expenses from './pages/Expenses';
 import Incomes from './pages/Incomes';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import ViewTransactions from './pages/ViewTransactions';
+import { Provider } from 'react-redux'
+import appStore from './store/appStore';
 
 function App() {
   return (
     <div className="w-[100vw] h-[100vh] flex">
-      <RouterProvider router={appRouter} />
+        <RouterProvider router={appRouter} />
     </div>
   );
 }
@@ -19,8 +21,10 @@ function App() {
 const AppLayout = () => {
   return (
     <>
-      <Sidebar />
-      <Outlet />
+      <Provider store={appStore} >
+        <Sidebar />
+        <Outlet />
+      </Provider>
     </>
   );
 };

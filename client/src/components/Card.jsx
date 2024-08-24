@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Income = ({item}) => {
+const Card = ({item}) => {
   return (
     <div className='flex flex-col border border-yellow-400 rounded-2xl'>
       <div className='flex justify-evenly mt-2'>
@@ -13,9 +13,9 @@ const Income = ({item}) => {
           <h1>Category: {item?.category}</h1>
         </div>
       </div>
-        <h1 className='p-2'>Reference: {item?.reference}</h1>
+        {item?.reference && <h1 className='p-2'>Reference: {item?.reference}</h1>}
     </div>
   )
 }
 
-export default Income
+export default Card

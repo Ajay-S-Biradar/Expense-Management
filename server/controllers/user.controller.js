@@ -58,9 +58,6 @@ const authenticateUser = asyncHandler(async (req,res)=>{
 
         const loggedUser = await User.findById(user._id).select("-password -refreshToken");
 
-        // console.log("tokens: ",res)
-        // console.log("Atoken: ",aToken)
-
         const options = {
             httpOnly:true,
             secure:true
@@ -77,7 +74,7 @@ const authenticateUser = asyncHandler(async (req,res)=>{
 })
 
 const signOutUser = asyncHandler( async (req,res)=>{
-    console.log(req.body);
+    console.log(req.user);
     await User.findByIdAndUpdate(
         req.user._id,
         {
@@ -92,7 +89,7 @@ const signOutUser = asyncHandler( async (req,res)=>{
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: false //make true for the production
     }
 
     return res
@@ -104,6 +101,10 @@ const signOutUser = asyncHandler( async (req,res)=>{
 
 const refreshAccessToken = asyncHandler( async (req,res)=>{
     const Token = req.cookies.refreshToken ;
+    if(!Token){
+        res.json({"error":"No token"});
+        return ;
+    }
     const decoded = jwt.verify(Token, process.env.REFRESH_TOKEN_SECRET)
 
     if(!decoded){

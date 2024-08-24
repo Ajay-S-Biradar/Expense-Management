@@ -14,17 +14,18 @@ const LoginSignUp = () => {
 
   useEffect(()=>{
     // const token = getToken();
-    if(!verifyUserLogin()){
-      navigate('/login');
+    if(verifyUserLogin()){
+      navigate('/entry');
       return;
     }
     navigate('/user/');
-  })
+  },[]);
 
   const verifyUserLogin = async ()=>{
-    const res = axios.post(API_URL+'refresh');
-    if(res.success) return true;
-    return false;
+    const res =await axios.post(API_URL+'user/refresh');
+    console.log(res);
+    if(res.data.error) return false;
+    return true;
   }
 
   const imgErr = ()=>{
@@ -63,11 +64,14 @@ const LoginSignUp = () => {
     if(!(password || username)){
       fillAllCredentials();
     }
-    const res =await axios.post(API_URL+'signin', {
+    const res =await axios.post(API_URL+'user/signin', {
       username,
       password
-    })
+    },{
+      withCredentials: true, // Include cookies in the request
+    });
     console.log(res);
+    navigate('/user/')
     //Sign Up
   }
   const handleSignUp = async ()=>{
