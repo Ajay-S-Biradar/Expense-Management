@@ -5,6 +5,7 @@ const User = require("../models/user.model");
 const verifyJwt = asyncHandler( async (req, res, next)=>{
     console.log("Jwtverify");
     try {
+        console.log(req.cookies);
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
         console.log("jwt", token);
         if(!token){

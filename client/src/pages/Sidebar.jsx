@@ -19,8 +19,9 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
+
     try {
-      const res =await axios.post(API_URL+'user/signout',{
+      const res =await axios.post('http://localhost:4030/api/user/signout',{},{
         withCredentials: true, // Include cookies in the request
     });
     console.log(res);

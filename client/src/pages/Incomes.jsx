@@ -29,6 +29,7 @@ const Incomes = () => {
       fillAllCredentials();
       return;
     }
+
     const res = await axios.post(API_URL+"income",{
       name,
       amount,
@@ -39,7 +40,7 @@ const Incomes = () => {
       withCredentials:true
     })
     if(res.data?.success){
-      addedSuccessFully();
+      addedSuccessFully();  
       dispatch(addIncome(res.data.addedIncome));
     }
     else{
