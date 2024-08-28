@@ -25,7 +25,7 @@ const getIncome = asyncHandler(async (req, res) => {
     const userId = req.user._id.toString();
     console.log({"income":userId});
     try {
-        const incomes = await Income.find({ owner: userId });
+        const incomes = await Income.find({ owner: userId }).sort({date:-1}) ;
         console.log(incomes);
         res.json(incomes);
     } catch (error) {
@@ -36,10 +36,10 @@ const getIncome = asyncHandler(async (req, res) => {
 });
 
 const deleteIncome = asyncHandler (async (req, res)=>{
-    const {incomeId} = req.body;
+    const {id} = (req.params);
     const userId = req.user?._id.toString();
     try {
-        await Income.deleteOne({$and:[{_id: incomeId},{owner: userId}]})
+        await Income.deleteOne({$and:[{_id: id},{owner: userId}]})
         res.json({"success":true})
     } catch (error) {
         res.status(400).json({"error":error});
