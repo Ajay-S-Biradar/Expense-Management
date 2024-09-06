@@ -2,8 +2,8 @@ import React from 'react'
 
 const Form = ({handleAddItem, setAmount, setCategory, setDate, setName, setReference, categories}) => {
   return (
-    <div className='m-5 w-1/2'>
-            <form action="" className='flex flex-col gap-4'>
+    <div className='col-span-1'>
+            <form action="" className='flex flex-col gap-2 w-[90%]'>
               <input 
               className='m-1 p-2 rounded-xl font-medium' type="text" placeholder='Add item'
               onChange={(e)=> setName(e.target.value)}

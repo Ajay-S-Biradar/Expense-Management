@@ -5,9 +5,9 @@ const User = require("../models/user.model");
 const verifyJwt = asyncHandler( async (req, res, next)=>{
     console.log("Jwtverify");
     try {
-        console.log(req.cookies);
+        // console.log(req.cookies);
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
-        console.log("jwt", token);
+        // console.log("jwt", token);
         if(!token){
             res.status(400).json("Token is undefined")
             return;
@@ -19,7 +19,7 @@ const verifyJwt = asyncHandler( async (req, res, next)=>{
             res.status(401).json("There is no user")
             return ;
         }
-        console.log({"jwt user":user})
+        // console.log({"jwt user":user})
         req.user = user
         next()
     } catch (error) {

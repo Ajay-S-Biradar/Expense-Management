@@ -18,10 +18,10 @@ const Cards = ({apiString}) => {
   // console.log(location);
 
   const dispatch = useDispatch();
-  let items;
+  let items=[];
   if (apiString==='income')
-    items = useSelector(appStore=>appStore.income.incomes);
-  else items = useSelector(appStore=>appStore.expense.expenses)
+    items = useSelector(appStore=>appStore.income.incomes) || [];
+  else items = useSelector(appStore=>appStore.expense.expenses) || []
 
   const navigate = useNavigate();
   useEffect(()=>{
@@ -46,7 +46,7 @@ const Cards = ({apiString}) => {
       }
       if (apiString==='income') dispatch(initialIncome(res.data));
       else dispatch(initialExpense(res.data));
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log(error.response);
       const stCode = error.response?.status
@@ -64,10 +64,10 @@ const Cards = ({apiString}) => {
       {alert && <div className="absolute top-0 p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
         <span className="font-medium">Warning alert!</span> Change a few things up and try submitting again.
       </div>}
-      <div className='overflow-y-scroll w-full flex flex-col h-[80vh] gap-5 my-3 p-2'>
-          {items.map((item, ind)=>{
-              return <Card key={ind} item={item}/>
-          })}
+      <div className="grid grid-cols-2 gap-5 p-2 mt-20">
+        {items?.map((item, ind) => (
+          <Card key={ind} item={item} />
+        ))}
       </div>
     </>
   )

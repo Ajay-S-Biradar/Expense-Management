@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser")
 const userRoutes = require('./routes/user')
 const incomeRoutes = require('./routes/income')
 const expenseRoutes = require('./routes/expense')
+const dashboardRoutes = require('./routes/dashboard')
 
 const app = express()
 app.use(cors({
@@ -25,6 +26,7 @@ connectDB()
 app.use('/api/user',userRoutes)
 app.use('/api/expense',expenseRoutes)
 app.use('/api/income',incomeRoutes)
+app.use('/api/dashboard', dashboardRoutes)
 
 app.use('/',(_,res)=>{
     res.send("Working...")

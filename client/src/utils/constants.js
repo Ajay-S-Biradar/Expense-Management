@@ -3,3 +3,5 @@ export const API_CLOUDINARY = "https://api.cloudinary.com/v1_1/dvwtbviaw/image/u
 
 export const expenseCategories = ["Medical", "Household", "Rent", "SIP", "Loan EMI","others"]
 export const incomeCategories = ["Salary", "Stocks", "Freelancing", "YouTube","others"]
+
+export const indexemonths = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"]
